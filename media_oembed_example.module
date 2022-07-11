@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * @file
+ * Hooks for Media oEmbed Example module.
+ */
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_oembed_resource_data_alter().
+ *
+ * This hook relies on https://www.drupal.org/project/drupal/issues/3042423 #9.
+ */
+function media_oembed_example_oembed_resource_data_alter(array &$data, $url) {
+  if ($data['provider_name'] === 'Media oEmbed Example Provider') {
+    // Give a default thumbnail width and height so it can be embedded.
+    $data += [
+      'thumbnail_width' => $data['width'],
+      'thumbnail_height' => $data['height'],
+    ];
+  }
+}
+
+/**
+ * Implements hook_oembed_resource_url_alter().
+ */
+function media_oembed_example_oembed_resource_url_alter(array &$parsed_url, \Drupal\media\OEmbed\Provider $provider) {
+  // Fix for the loopback reference URL changing based on environment (dev/prod)
+  // but it's hardcoded in config.
+  if ($provider->getName() === 'Media oEmbed Example Provider') {
+    $parsed_url['path'] = Url::fromRoute('media_oembed_example.media_route', [], ['absolute' => TRUE])->toString(FALSE);
+  }
+}

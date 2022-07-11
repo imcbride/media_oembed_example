@@ -1,0 +1,53 @@
+<?php
+
+/**
+ * @file
+ * This module provides install, uninstall, and update functions.
+ */
+
+use Drupal\Core\Url;
+
+/**
+ * Implements hook_install().
+ */
+function media_oembed_example_install() {
+  $oembed_storage = Drupal::entityTypeManager()->getStorage('oembed_provider');
+  $entity = $oembed_storage
+    ->getQuery()
+    ->condition('id', 'media_oembed_example_provider')
+    ->execute();
+
+  if (empty($entity)) {
+    $oembed_storage->create([
+      'id' => 'media_oembed_example_provider',
+      'label' => 'oEmbed Example Provider',
+      'provider_url' => 'https://video.school.edu',
+      'endpoints' => [
+        [
+          'url' => Url::fromRoute('media_oembed_example.media_route', [], ['absolute' => TRUE])->toString(FALSE),
+          'schemes' => [
+            'https://video.school.edu/path1*',
+            'https://video.school.edu/path2.ext*',
+          ],
+          'discovery' => FALSE,
+          'formats' => [
+            'json' => TRUE,
+            'xml' => FALSE,
+          ],
+        ]
+      ],
+    ])->save();
+  }
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function media_oembed_example_uninstall() {
+    $oembed_storage = Drupal::entityTypeManager()->getStorage('oembed_provider');
+    $entity = $oembed_storage->load('media_oembed_example_provider');
+
+    if (!empty($entity)) {
+      $oembed_storage->delete([$entity]);
+    }
+}

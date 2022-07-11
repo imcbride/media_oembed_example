@@ -1,0 +1,7 @@
+media_oembed_example.media_route:
+  path: '/extended_oembed/media_route'
+  defaults:
+    _controller: '\Drupal\media_oembed_example\Controller\OEmbedController::media'
+    _title: 'oEmbed'
+  requirements:
+    _access: 'TRUE'

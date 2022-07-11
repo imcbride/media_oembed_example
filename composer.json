@@ -1,0 +1,10 @@
+{
+    "name": "drupal/media_oembed_example",
+    "description": "Add custom oembed providers.",
+    "type": "drupal-module",
+    "license": "",
+    "minimum-stability": "dev",
+    "require": {
+        "drupal/oembed_providers": "^1.0"
+    }
+}

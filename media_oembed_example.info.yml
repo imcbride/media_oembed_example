@@ -1,0 +1,7 @@
+name: Media oEmbed Example
+description: Add custom oEmbed providers.
+package: Media
+type: module
+core_version_requirement: ^8.8.0 || ^9.0
+dependencies:
+  - oembed_providers:oembed_providers
